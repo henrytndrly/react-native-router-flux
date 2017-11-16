@@ -85,6 +85,15 @@ const Router = ({ createReducer, sceneStyle, scenes, uriPrefix, navigator, getSc
     navigationStore.dispatch = dispatch;
     return <AppNavigator navigation={addNavigationHelpers({ dispatch, state })} uriPrefix={uriPrefix} />;
   }
+  else if (dispatch) {
+      // also send actions to any passed dispatcher if no explicit state passed.
+      // works with react-redux
+      const navDispatch = navigationStore.dispatch;
+      navigationStore.dispatch = (...props) => {
+          navDispatch(...props);
+          dispatch(...props);
+      }
+  }
   return <App {...props} navigator={AppNavigator} uriPrefix={uriPrefix} />;
 };
 Router.propTypes = {

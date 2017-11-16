@@ -84,8 +84,17 @@ if(dispatch&&state){
 _navigationStore2.default.setState(state);
 _navigationStore2.default.dispatch=dispatch;
 return _react2.default.createElement(AppNavigator,{navigation:(0,_reactNavigation.addNavigationHelpers)({dispatch:dispatch,state:state}),uriPrefix:uriPrefix,__source:{fileName:_jsxFileName,lineNumber:86}});
+}else
+if(dispatch){
+
+
+var navDispatch=_navigationStore2.default.dispatch;
+_navigationStore2.default.dispatch=function(){
+navDispatch.apply(undefined,arguments);
+dispatch.apply(undefined,arguments);
+};
 }
-return _react2.default.createElement(App,_extends({},props,{navigator:AppNavigator,uriPrefix:uriPrefix,__source:{fileName:_jsxFileName,lineNumber:88}}));
+return _react2.default.createElement(App,_extends({},props,{navigator:AppNavigator,uriPrefix:uriPrefix,__source:{fileName:_jsxFileName,lineNumber:97}}));
 };
 Router.propTypes={
 createReducer:_propTypes2.default.func,
