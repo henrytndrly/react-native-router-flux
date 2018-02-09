@@ -12,6 +12,7 @@ class App extends React.Component {
     navigator: PropTypes.func,
     backAndroidHandler: PropTypes.func,
     uriPrefix: PropTypes.string,
+    onDeepLink: PropTypes.func,
   };
 
   componentDidMount() {
@@ -28,7 +29,7 @@ class App extends React.Component {
     Linking.removeEventListener('url', this.handleDeepURL);
   }
 
-  onBackPress = () => !navigationStore.pop();
+  onBackPress = () => navigationStore.pop();
 
   handleDeepURL = (e) => this.parseDeepURL(e.url);
 
@@ -55,7 +56,9 @@ class App extends React.Component {
       .map(([key]) => key)
       .find(key => key);
 
-    if (actionKey && navigationStore[actionKey]) {
+    if (this.props.onDeepLink) {
+      this.props.onDeepLink({ url, action: actionKey, params });
+    } else if (actionKey && navigationStore[actionKey]) {
       // Call the action associated with the scene's path with the parsed parameters.
       navigationStore[actionKey](params);
     }
@@ -69,7 +72,7 @@ class App extends React.Component {
   }
 }
 
-const Router = ({ createReducer, sceneStyle, scenes, uriPrefix, navigator, getSceneStyle, children, state, dispatch, wrapBy = props => props, ...props }) => {
+const Router = ({ createReducer, sceneStyle, scenes, uriPrefix, navigator, getSceneStyle, children, state, dispatch, onDeepLink, wrapBy = props => props, ...props }) => {
   const data = { ...props };
   if (getSceneStyle) {
     data.cardStyle = getSceneStyle(props);
@@ -94,7 +97,7 @@ const Router = ({ createReducer, sceneStyle, scenes, uriPrefix, navigator, getSc
           dispatch(...props);
       }
   }
-  return <App {...props} navigator={AppNavigator} uriPrefix={uriPrefix} />;
+  return <App {...props} onDeepLink={onDeepLink} navigator={AppNavigator} uriPrefix={uriPrefix} />;
 };
 Router.propTypes = {
   createReducer: PropTypes.func,
@@ -107,6 +110,7 @@ Router.propTypes = {
   sceneStyle: ViewPropTypes.style,
   children: PropTypes.element,
   uriPrefix: PropTypes.string,
+  onDeepLink: PropTypes.func,
 };
 
 export default Router;

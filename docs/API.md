@@ -38,6 +38,8 @@ The basic routing component for this router, all `<Scene>` components require a 
 | `drawer`     | `boolean` | `false` | load child scenes inside [DrawerNavigator](https://reactnavigation.org/docs/navigators/drawer) |
 | `failure` | `Function` | | If `on` returns a "falsey" value then `failure` is called. |
 | `backTitle` | `string` |  | Specifies the back button title for scene |
+| `backButtonTextStyle` | `Style` |  | Style applied to back button text |
+| `rightTitle` | `string` |  | Specifies the right button title for scene |
 | `headerMode` | `string` | `float` | Specifies how the header should be rendered: `float` (render a single header that stays at the top and animates as screens are changed. This is a common pattern on iOS.), `screen` (each screen has a header attached to it and the header fades in and out together with the screen. This is a common pattern on Android) or `none` (No header will be rendered) |
 | `hideNavBar`     | `boolean` | `false` | hide the nav bar |
 | `hideTabBar`     | `boolean` | `false` | hide the tab bar (only applies to scenes with `tabs` specified) |
@@ -45,6 +47,8 @@ The basic routing component for this router, all `<Scene>` components require a 
 | `initial`   | `boolean` | `false` | Set to `true` if this is the first scene to display among its sibling `Scene`s |
 | `leftButtonImage`     | `Image` |  | Image to substitute for the left nav bar button |
 | `leftButtonTextStyle`     | `Style` |  | Style applied to left button text |
+| `leftButtonStyle`     | `Style` |  | Style applied to left button |
+| `leftButtonIconStyle`     | `Style` |  | Style applied to left button Image |
 | `modal`     | `boolean` | `false` |  Defines scene container as 'modal' one, i.e. all children scenes will have bottom-to-top animation. It is applicable only for containers (different from v3 syntax) |
 | `navBar` | `React.Component`| | Optional React component to render custom NavBar |
 | `navBarButtonColor` | `string` | | Set the color of the back button in the navBar |
@@ -54,8 +58,8 @@ The basic routing component for this router, all `<Scene>` components require a 
 | `navTransparent`     | `boolean` | `false` | nav bar background transparency |
 | `on`     | `Function` | | aka `onEnter` |
 | `onBack`     | `Function` |  | Called when the back button is pressed. |
-| `onEnter`     | `Function` | | Called when the `Scene` is navigated to. `props` are provided as a function param. Only scenes with 'component' defined is supported |
-| `onExit`     | `Function` | | Called when the `Scene` is navigated away from. Only scenes with 'component' defined is supported |
+| `onEnter`     | `Function` | | Called when the `Scene` is navigated to. `props` are provided as a function param. Only scenes with 'component' defined is supported. Your component class may also have `onEnter` function |
+| `onExit`     | `Function` | | Called when the `Scene` is navigated away from. Only scenes with 'component' defined is supported. Your component class may also have `onExit` function |
 | `onLeft`     | `Function` |  | Called when the left nav bar button is pressed. |
 | `onRight`     | `Function` |  | Called when the right nav bar button is pressed. |
 | `renderTitle`     | `React.Component` |  | React component to render title for nav bar |
@@ -88,7 +92,7 @@ Can use all `props` listed above in `<Scene>` as `<Tabs>` is syntatic sugar for 
 | `tabBarStyle` | `object` | | Override the tabbar styles |
 | `tabStyle` | `object` | | Override the style for an individual tab of the tabbar |
 | `showLabel`     | `boolean` | `true`  | Boolean to show or not the tabbar icons labels |
-| `swipeEnabled`     | `boolean` | `true` | Enable or disable swiping tabs. |
+| `swipeEnabled`     | `boolean` | `false` | Enable or disable swiping tabs. |
 | `animationEnabled`     | `boolean` | `true` | Enable or disable tab swipe animation. |
 | `tabBarOnPress`     | `function` | | Custom tab bar icon press. |
 | `backToInitial`     | `boolean` | `false` | Back to initial screen on focused tab if tab icon was tapped. |
@@ -113,7 +117,8 @@ Can use all `prop` as listed in `Scene` as `<Drawer>`, syntatic sugar for `<Scen
 | `drawerIcon` | `React.Component` |  | Arbitrary component to be used for drawer 'hamburger' icon, you have to set it together with `drawer` prop |
 | `hideDrawerButton` | `boolean` | `false` | Boolean to show or not the drawerImage or drawerIcon |
 | `drawerPosition` | `string`  | `left` | Determines whether the drawer is on the right or the left. Keywords accepted are `right` and `left` |
-| `drawerWidth` | `number`  |  | The width, in pixels, of the drawer (optional)
+| `drawerWidth` | `number`  |  | The width, in pixels, of the drawer (optional)|
+| `drawerLockMode` | enum('unlocked', 'locked-closed', 'locked-open')  |  | Specifies the lock mode of the drawer (https://facebook.github.io/react-native/docs/drawerlayoutandroid.html#drawerlockmode) |
 
 
 ## Modals (`<Modal>` or `<Scene modal>`)
@@ -199,8 +204,8 @@ Type constants to determine `Scene` transitions, These are **PREFERRED** over ty
 ## Universal and Deep Linking
 #### Use Case
 - Consider a web app and mobile app pairing for a social network, which might have a url `https://thesocialnetwork.com/profile/1234/`.
-- If we were building both a web app and a mobile app, we'd like to be able to express that uri scheme across platforms with the path `/profile/:id/`. 
-- On the web, we might want `React-Router` to to open up our `<Profile />` component with the `props` `{ id: 1234 }`. 
+- If we were building both a web app and a mobile app, we'd like to be able to express that uri scheme across platforms with the path `/profile/:id/`.
+- On the web, we might want `React-Router` to to open up our `<Profile />` component with the `props` `{ id: 1234 }`.
 - On mobile, if we've correctly set up our Android/iOS environment to launch our application and open our RNRF `<Router />`, then we also want to navigate to our mobile `<Profile />` scene with the `params` ` { id: 1234 }`
 
 #### Usage
