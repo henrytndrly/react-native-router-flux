@@ -105,7 +105,7 @@ class App extends React.Component {
 }
 
 const Router = ({
-  createReducer, sceneStyle, onStateChange, scenes, uriPrefix, navigator, getSceneStyle, children, onDeepLink, wrapBy, ...props
+  createReducer, sceneStyle, onStateChange, scenes, uriPrefix, navigator, getSceneStyle, children, onDeepLink, wrapBy, dispatch, ...props
 }) => {
   const data = { ...props };
   if (getSceneStyle) {
